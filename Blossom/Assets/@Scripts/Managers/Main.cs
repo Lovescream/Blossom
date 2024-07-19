@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 
 public class Main : MonoBehaviour
@@ -56,6 +57,12 @@ public class Main : MonoBehaviour
         }
         DontDestroyOnLoad(obj);
         _instance = obj.GetComponent<Main>();
+
+        // #2. 매니저 초기화.
+        foreach (FieldInfo fieldInfo in typeof(Main).GetFields(BindingFlags.Instance | BindingFlags.NonPublic)) {
+            CoreManager manager = fieldInfo.GetValue(_instance) as CoreManager;
+            manager?.Initialize();
+        }
     }
 
     #endregion
