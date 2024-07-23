@@ -4,6 +4,7 @@ using UnityEngine.EventSystems;
 public class SceneManagerEx : CoreManager {
 
     public Scene Current { get; set; }
+    public UI_Scene CurrentUI { get; set; }
 
     public override bool Initialize() {
         if (!base.Initialize()) return false;

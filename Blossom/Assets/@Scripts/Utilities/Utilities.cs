@@ -45,6 +45,7 @@ public static class Utilities {
     #region Valid Check
 
     public static bool IsValid(GameObject obj) => obj != null && obj.activeSelf;
+    public static bool IsValid(UI ui) => ui != null && ui.isActiveAndEnabled;
 
     #endregion
 

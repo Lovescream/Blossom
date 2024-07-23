@@ -27,6 +27,9 @@ public class Main : MonoBehaviour
     public static ScreenManager Screen => Instance?._screen;
     public static SceneManagerEx Scene => Instance?._scene;
 
+    // Content.
+    public static UIManager UI => Instance?._ui;
+
     #endregion
 
     #region Fields
@@ -37,6 +40,9 @@ public class Main : MonoBehaviour
     private readonly DataManager _data = new();
     private readonly ScreenManager _screen = new();
     private readonly SceneManagerEx _scene = new();
+
+    // Content.
+    private readonly UIManager _ui = new();
 
     private static bool _isInitialized;
 
@@ -63,6 +69,10 @@ public class Main : MonoBehaviour
             CoreManager manager = fieldInfo.GetValue(_instance) as CoreManager;
             manager?.Initialize();
         }
+        foreach (FieldInfo fieldInfo in typeof(Main).GetFields(BindingFlags.Instance | BindingFlags.NonPublic)) {
+            ContentManager manager = fieldInfo.GetValue(_instance) as ContentManager;
+            manager?.Initialize();
+        }
     }
 
     #endregion
@@ -70,6 +80,18 @@ public class Main : MonoBehaviour
 }
 
 public abstract class CoreManager {
+
+    private bool _initialized;
+
+    public virtual bool Initialize() {
+        if (_initialized) return false;
+        _initialized = true;
+
+        return true;
+    }
+
+}
+public abstract class ContentManager {
 
     private bool _initialized;
 
@@ -92,4 +114,12 @@ public static class Path {
 
     public static string AssetPath = Application.dataPath;
     public static string DataPath = Application.persistentDataPath;
+}
+
+public static class Styles {
+    public static readonly Color TEXTCOLOR_TITLE = new(241 / 255f, 210 / 255f, 135 / 255f, 1);
+    public static readonly Color TEXTCOLOR_DESCRIPTION = new(200 / 255f, 200 / 255f, 200 / 255f, 1);
+    public static readonly Color TEXTCOLOR_BUTTON = new(50 / 255f, 50 / 255f, 50 / 255f, 1);
+    public static readonly Color TEXTCOLOR_WARNNING = new(255 / 255f, 100 / 255f, 100 / 255f, 1);
+    public static readonly Color BUTTONCOLOR_DISABLE = new(100 / 255f, 100 / 255f, 100 / 255f, 1);
 }
