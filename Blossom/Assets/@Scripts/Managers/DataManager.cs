@@ -21,29 +21,26 @@ public class DataManager : CoreManager {
         // #1. GameData 로드 / 생성
         if (!Load()) NewGame();
 
-        // #2. Data 경로 찾기.
-        DirectoryInfo directoryInfo = new($"{Application.dataPath}/{Path.DATA_JSON}");
-        // #3. Data 불러오기.
-        foreach (FileInfo fileInfo in directoryInfo.GetFiles()) {
-            // #2-1. json 파일만 찾기.
-            if (!fileInfo.Extension.Equals(".json")) continue;
+        // #2. Resources/Data 폴더 내 모든 파일 로드.
+        TextAsset[] dataFiles = Resources.LoadAll<TextAsset>("Data");
 
-            // #2-2. 타입 찾기.
-            string fileName = System.IO.Path.GetFileNameWithoutExtension(fileInfo.FullName);
-            Type type = Type.GetType(fileName);
+        // #3. Data 불러오기.
+        foreach (TextAsset textAsset in dataFiles) {
+            // #3-1. 타입 찾기.
+            Type type = Type.GetType(textAsset.name);
             if (type == null) {
-                Debug.LogError($"[DataManager] Initialize(): The type({fileName}) was not found.");
+                Debug.LogError($"[DataManager] Initialize(): The type({textAsset}) was not found.");
                 continue;
             }
 
-            // #2-3. 컬렉션에 추가.
+            // #3-2. 컬렉션에 추가.
             _data[type] = (typeof(JsonConvert)
                 .GetMethods()
                 .Where(m => m.Name == "DeserializeObject" && m.IsGenericMethod && m.GetParameters().Length == 1)
                 .FirstOrDefault()
                 .MakeGenericMethod(typeof(List<>)
                 .MakeGenericType(type))
-                .Invoke(null, new object[] { File.ReadAllText(fileInfo.FullName) })
+                .Invoke(null, new object[] { textAsset.text })
                 as IEnumerable<Data>).ToDictionary(x => x.Key);
         }
 
@@ -80,17 +77,14 @@ public class DataManager : CoreManager {
     public bool Load() {
         string path = System.IO.Path.Combine(Path.DataPath, Path.DATA_GAME);
         if (!Exists(path)) return false;
-
         GameData gameData = JsonConvert.DeserializeObject<GameData>(File.ReadAllText(path));
         if (gameData == null) return false;
-
         Current = gameData;
         return true;
     }
 
     private void NewGame() {
         Current = new();
-
         // ============================== 새 게임 생성 시 GameData 초기화 ====================================
 
 

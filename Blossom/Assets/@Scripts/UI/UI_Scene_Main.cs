@@ -29,16 +29,18 @@ public class UI_Scene_Main : UI_Scene {
         _log = this.gameObject.FindChild<UI_Image>("Log");
         _txtLog = this.gameObject.FindChild<UI_Text>("txtLog");
         _btnLogIn = this.gameObject.FindChild<UI_Button>("btnLogIn");
-
-        Scene.OnChangeLog -= OnChangedLog;
-        Scene.OnChangeLog += OnChangedLog;
-        OnChangedLog(Scene.Log);
         _btnLogIn.SetEvent(OnBtnLogIn);
 
         return true;
     }
 
     public void SetInfo(MainScene scene) {
+        this.Scene = scene;
+
+        Scene.OnChangeLog -= OnChangedLog;
+        Scene.OnChangeLog += OnChangedLog;
+        OnChangedLog(Scene.Log);
+
         Sequence sequence = DOTween.Sequence();
 
         sequence.Append(_txtTitle.transform.DOScale(0, 0))

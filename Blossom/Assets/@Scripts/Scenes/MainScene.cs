@@ -1,8 +1,6 @@
 using GooglePlayGames;
 using GooglePlayGames.BasicApi;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class MainScene : Scene {
@@ -15,6 +13,7 @@ public class MainScene : Scene {
         get => _log;
         set {
             _log = value;
+            Debug.Log(value);
             OnChangeLog?.Invoke(value);
         }
     }
@@ -36,6 +35,7 @@ public class MainScene : Scene {
 
         Log = $"Blossom Test App Initialized.\n";
         SceneUI = Main.UI.OpenScene<UI_Scene_Main>();
+        SceneUI.SetInfo(this);
 
         return true;
     }
