@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 public class SceneManagerEx : CoreManager {
 
@@ -10,6 +11,15 @@ public class SceneManagerEx : CoreManager {
         if (!base.Initialize()) return false;
 
         return true;
+    }
+
+    public void Load(string sceneName) {
+        Main.Clear();
+        SceneManager.LoadScene(sceneName);
+    }
+    public void Reload() {
+        Main.Clear();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
 }

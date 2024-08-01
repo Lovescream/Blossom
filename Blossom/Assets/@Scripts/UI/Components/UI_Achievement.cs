@@ -49,6 +49,9 @@ public class UI_Achievement : UI {
         _imgButton.Sprite = _sprites[achievement.completed ? 0 : 1];
     }
 
+    public void ActiveButton() => _btnAction.SetActive(true);
+    public void DeactiveButton() => _btnAction.SetActive(false);
+
     #endregion
 
     #region Events
@@ -57,23 +60,23 @@ public class UI_Achievement : UI {
         _btnAction.SetActive(false);
         if (Achievement.hidden) {
             PlayGamesPlatform.Instance.ReportProgress(Achievement.id, 0.0, b => {
-                if (b) Scene.Log += $"Successfully revealed the Achievement({Description.title} : {Achievement.id}).";
-                else Scene.Log += $"Failed to revealed the Achievement({Description.title} : {Achievement.id})";
-                this.SetInfo(Scene, Achievement, Description);
+                if (b) Scene.Log += $"Successfully revealed the Achievement({Description.title} : {Achievement.id}).\n";
+                else Scene.Log += $"Failed to revealed the Achievement({Description.title} : {Achievement.id}).\n";
+                Scene.LoadAchievements();
             });
         }
         else if (Description.title.Contains("!")) {
             PlayGamesPlatform.Instance.IncrementAchievement(Achievement.id, 1, b => {
-                if (b) Scene.Log += $"Successfully increased the Achievement({Description.title} : {Achievement.id}) by 1.";
-                else Scene.Log += $"Failed to increase the Achievement({Description.title} : {Achievement.id}) by 1.";
-                this.SetInfo(Scene, Achievement, Description);
+                if (b) Scene.Log += $"Successfully increased the Achievement({Description.title} : {Achievement.id}) by 1.\n";
+                else Scene.Log += $"Failed to increase the Achievement({Description.title} : {Achievement.id}) by 1.\n";
+                Scene.LoadAchievements();
             });
         }
         else {
             PlayGamesPlatform.Instance.ReportProgress(Achievement.id, 100.0, b => {
-                if (b) Scene.Log += $"Successfully achieved the Achievement({Description.title} : {Achievement.id}).";
-                else Scene.Log += $"Failed to achieved the Achievement({Description.title} : {Achievement.id})";
-                this.SetInfo(Scene, Achievement, Description);
+                if (b) Scene.Log += $"Successfully achieved the Achievement({Description.title} : {Achievement.id}).\n";
+                else Scene.Log += $"Failed to achieved the Achievement({Description.title} : {Achievement.id}).\n";
+                Scene.LoadAchievements();
             });
         }
     }

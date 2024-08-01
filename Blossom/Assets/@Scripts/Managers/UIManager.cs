@@ -68,6 +68,15 @@ public class UIManager : ContentManager {
         Object.Destroy(obj.gameObject);
     }
 
+    public void Clear() {
+        CloseAllPanels();
+        CloseAllPopups();
+        _panels.Clear();
+        _popups.Clear();
+        _popupOrder = INITIAL_ORDER_POPUP;
+        _panelOrder = INITIAL_ORDER_PANEL;
+    }
+
     #endregion
 
     #region Scenes

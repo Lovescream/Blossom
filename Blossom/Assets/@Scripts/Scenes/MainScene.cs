@@ -34,7 +34,7 @@ public class MainScene : Scene {
     protected override bool Initialize() {
         if (!base.Initialize()) return false;
 
-        Log = $"Blossom Test App Initialized.\n";
+        Log = $"Blossom Test App Initialized. Version: {Application.version}\n";
         SceneUI = Main.UI.OpenScene<UI_Scene_Main>();
         SceneUI.SetInfo(this);
 
@@ -74,7 +74,7 @@ public class MainScene : Scene {
     #endregion
 
     public void EnterTheGame() {
-
+        Main.Scene.Load("GameScene");
     }
 
 }

@@ -18,6 +18,8 @@ public class GameScene : Scene {
         }
     }
 
+    public UI_Panel_Achievements AchievementUI { get; private set; }
+
     #endregion
 
     #region Fields
@@ -35,7 +37,6 @@ public class GameScene : Scene {
     protected override bool Initialize() {
         if (!base.Initialize()) return false;
 
-        Log = $"Blossom Test App Initialized.\n";
         SceneUI = Main.UI.OpenScene<UI_Scene_Game>();
         SceneUI.SetInfo(this);
 
@@ -47,6 +48,10 @@ public class GameScene : Scene {
     public void LoadAchievements() {
         Log = "";
 
+        if (AchievementUI != null) {
+            AchievementUI.DeactiveButton();
+        }
+
         PlayGamesPlatform.Instance.LoadAchievements(OnLoadAchievements);
         PlayGamesPlatform.Instance.LoadAchievementDescriptions(OnLoadAchievementDescription);
     }
@@ -55,21 +60,25 @@ public class GameScene : Scene {
 
     private void OnLoadAchievements(IAchievement[] achievements) {
         _achievements = achievements;
-        Log += $"Loaded {achievements.Length} Achievements.";
+        Log += $"Loaded {achievements.Length} Achievements.\n";
         OnLoadAchievementsCompleted();
     }
 
     private void OnLoadAchievementDescription(IAchievementDescription[] descriptions) {
         _descriptions = descriptions;
-        Log += $"Loaded {descriptions.Length} Achievement Descriptions.";
+        Log += $"Loaded {descriptions.Length} Achievement Descriptions.\n";
         OnLoadAchievementsCompleted();
     }
 
     private void OnLoadAchievementsCompleted() {
         if (_achievements == null || _descriptions == null) return;
-        Log += $"Achievement Load Completed.";
+        Log += $"Achievement Load Completed.\n";
 
-        Main.UI.OpenPanel<UI_Panel_Achievements>().SetInfo(this, _achievements, _descriptions);
+        if (AchievementUI == null) {
+            AchievementUI = Main.UI.OpenPanel<UI_Panel_Achievements>();
+            AchievementUI.OnClosed += () => AchievementUI = null;
+        }
+        AchievementUI.SetInfo(this, _achievements, _descriptions);
         _achievements = null;
         _descriptions = null;
     }

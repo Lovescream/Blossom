@@ -60,6 +60,14 @@ public class UI_Panel_Achievements : UI_Panel {
         for (int i = 0; i < 6; i++) _achievements[i].SetInfo(scene, achievements[i], descriptions[i]);
     }
 
+    public void ActiveButton() {
+        for (int i = 0; i < 6; i++) _achievements[i].ActiveButton();
+    }
+
+    public void DeactiveButton() {
+        for (int i = 0; i < 6; i++) _achievements[i].DeactiveButton();
+    }
+
     #endregion
 
     #region Events

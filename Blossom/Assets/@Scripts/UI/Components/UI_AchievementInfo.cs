@@ -51,7 +51,7 @@ public class UI_AchievementInfo : UI {
         Texture2D texture = description.image;
         if (texture != null) _imgIcon.Sprite = Sprite.Create(texture, new(0, 0, texture.width, texture.height), new(0.5f, 0.5f));
         _imgCheck.gameObject.SetActive(achievement.completed);
-        _imgHidden.gameObject.SetActive(achievement.hidden);
+        _imgHidden.gameObject.SetActive(!achievement.completed && achievement.hidden);
 
         _txtTitle.Text = $"{description.title} ({description.id})";
         _txtDescription.Text = $"{(achievement.completed ? description.achievedDescription : description.unachievedDescription)}";
