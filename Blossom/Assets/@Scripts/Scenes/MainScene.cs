@@ -25,6 +25,7 @@ public class MainScene : Scene {
     private string _log;
 
     public event Action<string> OnChangeLog;
+    public event Action OnAuthenticated;
 
     #endregion
 
@@ -63,6 +64,7 @@ public class MainScene : Scene {
             string id = PlayGamesPlatform.Instance.GetUserId();
             string name = PlayGamesPlatform.Instance.GetUserDisplayName();
             Log += $"Successfully Logged In. ID: {id}, Name: {name}\n";
+            OnAuthenticated?.Invoke();
         }
         else {
             Log += $"Log In Failed. \n";
@@ -70,5 +72,9 @@ public class MainScene : Scene {
     }
 
     #endregion
+
+    public void EnterTheGame() {
+
+    }
 
 }
