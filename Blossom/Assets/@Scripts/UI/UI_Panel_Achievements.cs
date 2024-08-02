@@ -58,6 +58,25 @@ public class UI_Panel_Achievements : UI_Panel {
         OnChangedLog(scene.Log);
 
         for (int i = 0; i < 6; i++) _achievements[i].SetInfo(scene, achievements[i], descriptions[i]);
+
+        Scene.Log += $"Load Achievements Completed.\n";
+        for (int i = 0; i < 6; i++) {
+            IAchievementDescription d = descriptions[i];
+            string log = $"[{i}] {d.title} ({d.id})\n";
+
+            if (d.image == null) log += "###Image is null.\n";
+            else log += $"###Image is not null.\n";
+
+            if (d.achievedDescription == null) log += "###A.D is null.\n";
+            else log += $"###A.D = {d.achievedDescription}\n";
+
+            if (d.unachievedDescription == null) log += "###U.D is null.\n";
+            else log += $"###U.D = {d.unachievedDescription}\n";
+
+            log += $"###Hidden = {d.hidden}\n";
+            log += $"###Point = {d.points}\n";
+            Scene.Log += log;
+        }
     }
 
     public void ActiveButton() {
